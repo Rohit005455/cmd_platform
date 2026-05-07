@@ -18,6 +18,24 @@ pages_bp = Blueprint("pages", __name__)
 # =========================
 @pages_bp.route("/pages", methods=["GET"])
 def list_pages():
+    """
+    List all pages
+    ---
+    responses:
+      200:
+        description: A list of pages
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              slug:
+                type: string
+    """
 
     pages = get_all_pages()
 
@@ -32,6 +50,28 @@ def list_pages():
 # =========================
 @pages_bp.route("/pages/add", methods=["POST"])
 def create_page_route():
+    """
+    Create a new page
+    ---
+    parameters:
+      - name: title
+        in: formData
+        type: string
+        required: true
+      - name: slug
+        in: formData
+        type: string
+        required: true
+      - name: misc_data
+        in: formData
+        type: string
+        required: false
+    responses:
+      302:
+        description: Redirects to the new page edit view
+      400:
+        description: Validation error (e.g. duplicate slug)
+    """
     try:
         data = request.form.to_dict()
         new_page = create_page(data)
@@ -47,6 +87,20 @@ def create_page_route():
 # =========================
 @pages_bp.route("/pages/<string:page_id>", methods=["GET"])
 def edit_page(page_id):
+    """
+    Open page editor
+    ---
+    parameters:
+      - name: page_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Returns the edit page HTML
+      404:
+        description: Page not found
+    """
 
     try:
 
@@ -71,6 +125,29 @@ def edit_page(page_id):
 # =========================
 @pages_bp.route("/pages/<string:page_id>/update", methods=["POST"])
 def update_page_form(page_id):
+    """
+    Update page configuration (Title, Slug, Misc)
+    ---
+    parameters:
+      - name: page_id
+        in: path
+        type: string
+        required: true
+      - name: title
+        in: formData
+        type: string
+      - name: slug
+        in: formData
+        type: string
+      - name: misc_data
+        in: formData
+        type: string
+    responses:
+      302:
+        description: Redirects back to edit view
+      400:
+        description: Validation error
+    """
 
     try:
 

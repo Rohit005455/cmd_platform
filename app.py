@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for
+from flasgger import Swagger
 from config import Config
 from extensions import db
 
@@ -15,6 +16,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config.from_object(Config)
+swagger = Swagger(app)
 
 # IST Timezone Filter
 @app.template_filter('ist')

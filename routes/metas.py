@@ -7,6 +7,28 @@ meta_bp = Blueprint("meta", __name__)
 
 @meta_bp.route("/meta/<page_id>/edit", methods=["POST"])
 def edit_meta(page_id):
+    """
+    Update SEO and Meta tags for a page
+    ---
+    parameters:
+      - name: page_id
+        in: path
+        type: string
+        required: true
+      - name: meta_title
+        in: formData
+        type: string
+      - name: meta_description
+        in: formData
+        type: string
+      - name: og_graph
+        in: formData
+        type: string
+        description: JSON string
+    responses:
+      302:
+        description: Redirects back to page editor
+    """
     try:
         data = request.form.to_dict()
 

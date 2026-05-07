@@ -9,6 +9,28 @@ sections_bp = Blueprint("sections", __name__)
 # ADD SECTION
 @sections_bp.route("/sections/add", methods=["POST"])
 def create_section():
+    """
+    Add a new content section to a page
+    ---
+    parameters:
+      - name: page_id
+        in: formData
+        type: string
+        required: true
+      - name: section_name
+        in: formData
+        type: string
+        required: true
+      - name: type
+        in: formData
+        type: string
+      - name: name
+        in: formData
+        type: string
+    responses:
+      302:
+        description: Redirects back to page editor
+    """
     data = request.form.to_dict()
     page_id = data.get("page_id")
     
@@ -25,6 +47,27 @@ def create_section():
 # EDIT SECTION
 @sections_bp.route("/sections/<string:section_id>/edit", methods=["POST"])
 def edit_section(section_id):
+    """
+    Update an existing content section
+    ---
+    parameters:
+      - name: section_id
+        in: path
+        type: string
+        required: true
+      - name: name
+        in: formData
+        type: string
+      - name: html_content
+        in: formData
+        type: string
+      - name: is_active
+        in: formData
+        type: boolean
+    responses:
+      302:
+        description: Redirects back to page editor
+    """
     data = request.form.to_dict()
 
     section = Section.query.filter_by(id=section_id).first()
