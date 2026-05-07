@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CMS Edit– {{ page.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="cms-shell">
+    <!-- MOBILE OVERLAY -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            </div>
+            <div class="logo-text">ContentOS</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-label">Content</div>
+            <a class="nav-item active" href="/pages">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                Pages
+            </a>
+            <div class="nav-label">Site</div>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <span class="status-dot"></span>
+            <span>All systems live</span>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div style="display:flex; align-items:center; gap:16px;">
+                <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="breadcrumb">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <a href="/pages" style="color:inherit; text-decoration:none;">Pages</a>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    <span>{{ page.title }}</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <span class="badge badge-green">Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="window.open('{{ page.slug }}', '_blank')">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Preview
+                </button>
+            </div>
+        </div>
+        
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                {% if category == 'error' %}
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                {% elif category == 'success' %}
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                {% else %}
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                {% endif %}
+                                {{ message }}
+                            </div>
+                            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="page-grid">
+
+                <!-- ======= LEFT COLUMN ======= -->
+                <div class="left-col">
+
+                    <!-- PAGE INFO -->
+                    <div class="card" style="margin-bottom:24px;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                                Page Configuration
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="/pages/{{ page.id }}/update">
+                                <div class="field-row">
+                                    <div class="field">
+                                        <label>Page Title</label>
+                                        <input type="text" name="title" value="{{ page.title }}" placeholder="e.g. Home Page">
+                                    </div>
+                                    <div class="field">
+                                        <label>URL Slug</label>
+                                        <input type="text" name="slug" value="{{ page.slug }}" placeholder="e.g. home">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Miscellaneous Data <span class="label-hint">(JSON format)</span></label>
+                                    <textarea class="code-area" name="misc_data" rows="4">{{ page.misc_data }}</textarea>
+                                </div>
+                                <div class="form-actions" style="border-top:none; padding-top:0;">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                        Update Page Info
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- SECTIONS -->
+                    <div class="card">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                Content Sections
+                                <span class="badge badge-amber" style="margin-left:8px;">{{ sections|length }}</span>
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary btn-sm" onclick="toggleAddSection()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Add Section
+                            </button>
+                        </div>
+
+                        <!-- SEARCH & ADD CONTROLS -->
+                        <div style="padding: 16px 24px; border-bottom: 1px solid var(--c-border); background: rgba(255,255,255,0.01);">
+                            <!-- SEARCH SECTIONS -->
+                            <div class="search-input-wrap" style="margin-bottom:0;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="section-search" class="search-input" placeholder="Search sections by name, type or key..." onkeyup="filterSections()">
+                            </div>
+
+                            <!-- ADD SECTION FORM (Hidden by default) -->
+                            <div class="add-section-form collapse" id="add-section-form" style="margin-top:16px;">
+                                <div style="border: 1px solid var(--c-border); border-radius: var(--radius-md); padding:20px; background: var(--c-bg);">
+                                    <div style="font-size:14px; margin-bottom:16px; font-weight: 600; color: var(--c-text-main);">Configure New Section</div>
+                                    <form method="POST" action="/sections/add">
+                                        <input type="hidden" name="page_id" value="{{ page.id }}">
+                                        <div class="field-row">
+                                            <div class="field">
+                                                <label>Section Key</label>
+                                                <input type="text" name="section_name" placeholder="e.g. hero_main" required>
+                                            </div>
+                                            <div class="field">
+                                                <label>Name</label>
+                                                <input type="text" name="name" placeholder="e.g. Main Hero" required>
+                                            </div>
+                                            <div class="field">
+                                                <label>Type</label>
+                                                <select name="type">
+                                                    <option value="custom">Custom HTML</option>
+                                                    <option value="hero">Hero Banner</option>
+                                                    <option value="faq">FAQ Accordion</option>
+                                                    <option value="gallery">Image Gallery</option>
+                                                    <option value="cta">Call to Action</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>Description</label>
+                                            <input type="text" name="description" placeholder="Briefly describe this section">
+                                        </div>
+                                        <div class="field">
+                                            <label>HTML Content <span class="label-hint">(Tailwind/CSS allowed)</span></label>
+                                            <textarea class="code-area" name="html_content" rows="4" placeholder="<section class='...'> ... </section>"></textarea>
+                                        </div>
+                                        <div class="field-row">
+                                            <div class="field">
+                                                <label>Asset Images <span class="label-hint">(URLs, comma separated)</span></label>
+                                                <input type="text" name="image_urls" placeholder="https://image1.jpg, https://image2.jpg">
+                                            </div>
+                                            <div class="field">
+                                                <label>Asset Videos <span class="label-hint">(URLs, comma separated)</span></label>
+                                                <input type="text" name="video_urls" placeholder="https://video1.mp4">
+                                            </div>
+                                        </div>
+                                        <div class="field-row" style="align-items: center;">
+                                            <div class="field" style="margin-bottom:0;">
+                                                <label>Sort Order</label>
+                                                <input type="number" name="order_index" value="0" style="max-width: 120px;">
+                                            </div>
+                                            <div class="field" style="margin-bottom:0; display:flex; align-items:center; padding-top:20px;">
+                                                <div class="toggle-wrap">
+                                                    <label class="toggle">
+                                                        <input type="checkbox" name="is_active" checked>
+                                                        <span class="slider-t"></span>
+                                                    </label>
+                                                    <span class="toggle-label">Visible on site</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleAddSection()">Cancel</button>
+                                            <button type="submit" class="btn btn-primary btn-sm">Create Section</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sections-list">
+                            {% for sec in sections %}
+                            <div class="section-item">
+                                <div class="section-row" onclick="toggleSection('{{ sec.id }}')">
+                                    <div class="section-drag">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                                    </div>
+                                    <div class="section-info">
+                                        <div class="section-name">{{ sec.name }}</div>
+                                        <div class="section-meta">
+                                            <span class="type-pill type-{{ sec.type }}">{{ sec.type }}</span>
+                                            <span style="opacity: 0.5;">·</span>
+                                            <span>Order {{ sec.order_index }}</span>
+                                            <span style="opacity: 0.5;">·</span>
+                                            {% if sec.is_active %}
+                                                <span class="badge badge-green" style="padding: 1px 6px; font-size: 9px;">Active</span>
+                                            {% else %}
+                                                <span class="badge badge-amber" style="padding: 1px 6px; font-size: 9px;">Hidden</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <svg class="chevron" id="chev-{{ sec.id }}" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </div>
+
+                                <div class="collapse" id="edit-{{ sec.id }}">
+                                    <div class="section-edit-form" style="background: rgba(255,255,255,0.01);">
+                                        <form method="POST" action="/sections/{{ sec.id }}/edit">
+                                            <div class="field-row">
+                                                <div class="field">
+                                                    <label>Section Key</label>
+                                                    <input type="text" value="{{ sec.section_name }}" readonly class="readonly-input">
+                                                </div>
+                                                <div class="field">
+                                                    <label>Display Name</label>
+                                                    <input type="text" name="name" value="{{ sec.name }}">
+                                                </div>
+                                                <div class="field">
+                                                    <label>Component Type</label>
+                                                    <select name="type">
+                                                        <option value="custom"  {% if sec.type == "custom"  %}selected{% endif %}>Custom HTML</option>
+                                                        <option value="hero"    {% if sec.type == "hero"    %}selected{% endif %}>Hero Banner</option>
+                                                        <option value="faq"     {% if sec.type == "faq"     %}selected{% endif %}>FAQ Accordion</option>
+                                                        <option value="gallery" {% if sec.type == "gallery" %}selected{% endif %}>Image Gallery</option>
+                                                        <option value="cta"     {% if sec.type == "cta"     %}selected{% endif %}>Call to Action</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label>Short Description</label>
+                                                <input type="text" name="description" value="{{ sec.description }}">
+                                            </div>
+                                            <div class="field">
+                                                <label>HTML Content <span class="label-hint">(Tailwind/CSS allowed)</span></label>
+                                                <textarea class="code-area" name="html_content" rows="6">{{ sec.html_content }}</textarea>
+                                            </div>
+                                            <div class="field-row">
+                                                <div class="field">
+                                                    <label>Asset Images <span class="label-hint">(URLs, separated by comma)</span></label>
+                                                    <input type="text" name="image_urls" value="{{ sec.image_urls | join(',') if sec.image_urls }}">
+                                                </div>
+                                                <div class="field">
+                                                    <label>Asset Videos <span class="label-hint">(URLs, separated by comma)</span></label>
+                                                    <input type="text" name="video_urls" value="{{ sec.video_urls | join(',') if sec.video_urls }}">
+                                                </div>
+                                            </div>
+                                            <div class="field-row" style="align-items: center;">
+                                                <div class="field" style="margin-bottom:0;">
+                                                    <label>Sort Order</label>
+                                                    <input type="number" name="order_index" value="{{ sec.order_index }}" style="max-width: 120px;">
+                                                </div>
+                                                <div class="field" style="margin-bottom:0; display:flex; align-items:center; padding-top:20px;">
+                                                    <div class="toggle-wrap">
+                                                        <label class="toggle">
+                                                            <input type="checkbox" name="is_active" {% if sec.is_active %}checked{% endif %}>
+                                                            <span class="slider-t"></span>
+                                                        </label>
+                                                        <span class="toggle-label">Visible on site</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button type="button" class="btn btn-ghost btn-sm" onclick="toggleSection('{{ sec.id }}')">Discard</button>
+                                                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!-- ======= END LEFT COLUMN ======= -->
+
+
+                <!-- ======= RIGHT COLUMN ======= -->
+                <div class="side-panel">
+
+                    <!-- SEO / META -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                SEO & Meta Tags
+                            </div>
+                            <button class="btn btn-ghost btn-sm" id="meta-toggle-btn" onclick="toggleMeta()">Edit</button>
+                        </div>
+
+                        <!-- META PREVIEW -->
+                        <div id="meta-preview" style="padding:24px;">
+                            <div class="meta-row">
+                                <span class="meta-key">Meta Title</span>
+                                <span class="meta-val">{{ meta.meta_title or 'Default' }}</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-key">Description</span>
+                                <span class="meta-val">{{ meta.meta_description or 'None' }}</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-key">Keywords</span>
+                                <span class="meta-val">{{ meta.keywords or 'None' }}</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-key">Canonical</span>
+                                <span class="meta-val">{{ meta.canonical_url or 'Default' }}</span>
+                            </div>
+                            <div class="meta-row" style="border-bottom:none;">
+                                <span class="meta-key">Robots</span>
+                                <span class="meta-val">{{ meta.meta_robots or 'index, follow' }}</span>
+                            </div>
+                        </div>
+
+
+
+                        <!-- META FORM -->
+                        <div id="meta-form" class="collapse" style="border-top:1px solid var(--c-border);">
+                            <div class="section-edit-form" style="background: rgba(255,255,255,0.01);">
+
+                            <form method="POST" action="/meta/{{ page.id }}/edit">
+                                <div class="field">
+                                    <label>Meta Title</label>
+                                    <input type="text" name="meta_title" value="{{ meta.meta_title }}">
+                                </div>
+                                <div class="field">
+                                    <label>Description</label>
+                                    <textarea name="meta_description" rows="3">{{ meta.meta_description }}</textarea>
+                                </div>
+                                <div class="field">
+                                    <label>Keywords</label>
+                                    <input type="text" name="keywords" value="{{ meta.keywords }}">
+                                </div>
+                                <div class="field">
+                                    <label>Canonical URL</label>
+                                    <input type="text" name="canonical_url" value="{{ meta.canonical_url }}">
+                                </div>
+                                <div class="field">
+                                    <label>Robots</label>
+                                    <input type="text" name="meta_robots" value="{{ meta.meta_robots }}">
+                                </div>
+                                <div class="field">
+                                    <label>OG Graph <span class="label-hint">(JSON)</span></label>
+                                    <textarea class="code-area" name="og_graph" rows="4">{{ meta.og_graph }}</textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleMeta()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Save Metadata</button>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- PAGE STATUS -->
+                    <div class="card" style="margin-top:24px;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                Publishing Status
+                            </div>
+                        </div>
+                        <div style="padding:20px;">
+                            <div class="meta-row"><span class="meta-key">Status</span><span class="badge badge-green">Published</span></div>
+                            <div class="meta-row"><span class="meta-key">Total Blocks</span><span class="meta-val">{{ sections|length }} sections</span></div>
+                            <div class="meta-row" style="border-bottom:none;">
+                                <span class="meta-key">Last Saved</span>
+                                <span class="meta-val">{{ (page.updated_at|ist).strftime('%b %d, %H:%M') if page.updated_at else 'Just now' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUICK LINKS -->
+                    <div class="card" style="margin-top:24px;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                Other Pages
+                            </div>
+                        </div>
+                        <div id="pages-list" class="sections-list">
+                            {% for p in pages %}
+                            <a href="/pages/{{ p.id }}" class="page-list-item {% if p.id == page.id %}active{% endif %}" style="display:flex; flex-direction:column; padding:12px 20px; border-bottom: 1px solid var(--c-border); text-decoration:none; transition: background 0.2s;">
+                                <span class="page-list-title" style="font-weight:600; color: var(--c-text-main); font-size: 13px;">{{ p.title }}</span>
+                                <span class="page-list-slug" style="font-size: 11px; color: var(--c-text-dim); font-family: var(--font-mono);">/{{ p.slug }}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <!-- ======= END RIGHT COLUMN ======= -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
