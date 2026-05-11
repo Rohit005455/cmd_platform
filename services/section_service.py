@@ -1,58 +1,10 @@
 import json
+from sqlalchemy.orm.attributes import flag_modified
 from models.section import Section
 from extensions import db
 
 
-def add_section(data):
-    section_name = data.get("section_name", "").strip()
 
-    if not section_name:
-        raise ValueError("section_name is required")
-
-    # Check if section_name is already taken
-    existing = Section.query.filter_by(section_name=section_name).first()
-    if existing:
-        raise ValueError(f"Section key '{section_name}' is already taken")
-
-    # convert comma-separated → list
-    image_urls = data.get("image_urls")
-    video_urls = data.get("video_urls")
-
-    image_list = [i.strip() for i in image_urls.split(",")] if image_urls else []
-    video_list = [v.strip() for v in video_urls.split(",")] if video_urls else []
-
-    section = Section(
-        page_id=data.get("page_id"),
-        type=data.get("type", "custom"),
-
-        section_name=section_name,
-
-        name=data.get("name"),
-        description=data.get("description"),
-        html_content=data.get("html_content"),
-
-        image_urls=image_list if image_list else None,
-        video_urls=video_list if video_list else None,
-
-        order_index=int(data.get("order_index", 0)),
-        is_active=True if data.get("is_active") else False,
-
-        created_by="user-1",
-        updated_by="user-1"
-    )
-
-    db.session.add(section)
-    
-    # Touch parent page
-    from models.page import Page
-    page = Page.query.get(data.get("page_id"))
-    if page:
-        from datetime import datetime
-        page.updated_at = datetime.utcnow()
-    
-    db.session.commit()
-
-    return section
 
 def update_section(section_id, data):
     section = Section.query.get(section_id)
@@ -87,17 +39,53 @@ def update_section(section_id, data):
     if "description" in data:
         section.description = data["description"]
 
-    if "html_content" in data:
-        section.html_content = data["html_content"]
+    # Isolated update logic based on section type
+    current_content = section.content or {}
 
-    # convert comma-separated → list
-    if "image_urls" in data:
-        image_urls = data.get("image_urls")
-        section.image_urls = [i.strip() for i in image_urls.split(",")] if image_urls else None
-
-    if "video_urls" in data:
-        video_urls = data.get("video_urls")
-        section.video_urls = [v.strip() for v in video_urls.split(",")] if video_urls else None
+    if section.type == "hero":
+        if "hero_banner" in data:
+            current_content["hero_banner"] = data["hero_banner"]
+        if "hero_heading" in data:
+            current_content["hero_heading"] = data["hero_heading"]
+        if "hero_subheading" in data:
+            current_content["hero_subheading"] = data["hero_subheading"]
+    
+    elif section.type == "milestone":
+        if "cars_count" in data:
+            current_content["cars_count"] = data["cars_count"]
+        if "years_count" in data:
+            current_content["years_count"] = data["years_count"]
+        if "customers_count" in data:
+            current_content["customers_count"] = data["customers_count"]
+        if "rating" in data:
+            current_content["rating"] = data["rating"]
+    
+    elif section.type == "franchise":
+        if "franchise_count" in data:
+            current_content["franchise_count"] = data["franchise_count"]
+        if "franchise_locations" in data:
+            current_content["franchise_locations"] = data["franchise_locations"]
+    
+    elif section.type == "testimonial":
+        # Handle as JSON string if passed as 'items'
+        if "items" in data:
+            try:
+                import json
+                current_content["items"] = json.loads(data["items"]) if isinstance(data["items"], str) else data["items"]
+            except:
+                pass
+    
+    elif section.type == "faq":
+        # Handle as JSON string if passed as 'items'
+        if "items" in data:
+            try:
+                import json
+                current_content["items"] = json.loads(data["items"]) if isinstance(data["items"], str) else data["items"]
+            except:
+                pass
+    
+    section.content = current_content
+    flag_modified(section, "content")
 
     if "order_index" in data:
         section.order_index = int(data.get("order_index", 0))

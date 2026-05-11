@@ -2,6 +2,7 @@ from models.page import Page
 from models.section import Section
 from models.meta import PageMeta
 from extensions import db
+import re
 from utils.validators import validate_update_page
 
 def get_page_with_details_by_slug(slug):
